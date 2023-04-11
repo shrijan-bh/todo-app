@@ -17,7 +17,7 @@ const Home = () => {
   const formOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!todoLists.includes(todoItem)) {
-      setTodoLists((prev) => [todoItem, ...prev]);
+      setTodoLists((prev) => [...prev, todoItem]);
       toastHook({
         message: "Sucessfully added",
         type: "success",
