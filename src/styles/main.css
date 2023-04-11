@@ -1,0 +1,108 @@
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Work Sans", sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: -0.5px;
+}
+
+button {
+  font-family: "Work Sans", sans-serif;
+}
+
+.mainContainer {
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background: #ffffff;
+  box-shadow: 4px 4px 250px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 3rem 4rem;
+}
+
+.formbox {
+  margin: 1rem 0rem;
+}
+
+.headContainer {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.subbtn {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.8rem 0;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(5, 86, 236);
+  color: white;
+  font-weight: 500;
+  transition: background-color 0.4s ease-in;
+}
+
+.inputBox {
+  border-radius: 5px;
+  padding: 0.8rem;
+  outline: none;
+  border: 1px solid rgb(187, 187, 187);
+}
+
+.subbtn:hover {
+  background-color: rgb(3, 66, 185);
+  cursor: pointer;
+}
+
+.listHeadContainer {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 2rem 0;
+}
+
+.todoItem {
+  background-color: rgba(5, 86, 236, 0.05);
+  text-align: left;
+  padding: 1.2rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+
+.deleteButton {
+  float: right;
+  outline: none;
+  border: 1px solid rgb(187, 187, 187);
+  border-radius: 3px;
+  padding: 0.2rem;
+  font-size: 0.65rem;
+  background-color: transparent;
+  margin-top: -3px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+  .deleteButton {
+    display: block;
+    float: none;
+    margin: 10px auto 0 auto;
+    width: 100%;
+    padding: 0.5rem 0;
+  }
+  .mainContainer {
+    padding: 2rem;
+  }
+}

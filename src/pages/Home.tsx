@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
+import "../styles/main.css";
 const Home = () => {
   const [todoItem, setTodoItem] = useState("");
-  const storageItems = JSON.parse(localStorage.getItem("items") || "{}");
+  const storageItems = JSON.parse(localStorage.getItem("items") || "[]");
   const [todoLists, setTodoLists] = useState<string[]>(storageItems);
   const formOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTodoItem(e.target.value);
@@ -10,14 +11,19 @@ const Home = () => {
 
   const formOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setTodoLists((prev) => [todoItem, ...prev]);
+    if (!todoLists.includes(todoItem)) {
+      setTodoLists((prev) => [todoItem, ...prev]);
+    } else {
+      alert("Repeated value");
+    }
     setTodoItem("");
   };
 
   const delOnClick = (item: string) => {
     const answer = todoLists.includes(item);
     answer
-      ? setTodoLists((current) => current.filter((ite) => ite !== item))
+      ? (setTodoLists((current) => current.filter((ite) => ite !== item)),
+        alert("Sucessfully deleted"))
       : console.log("No data");
   };
   useEffect(() => {
@@ -26,33 +32,37 @@ const Home = () => {
     }
   }, [todoLists]);
   return (
-    <div>
+    <div className="mainContainer">
       <Helmet>
-        <title>Your ToDo list</title>
+        <title>Todo - Manage your tasks efficiently</title>
       </Helmet>
 
-      <h1>ToDo App</h1>
-
-      <form onSubmit={formOnSubmit}>
+      <p className="headContainer">Add your tasks</p>
+      <form onSubmit={formOnSubmit} className="formbox">
         <input
           onChange={formOnChange}
           type="text"
           value={todoItem}
           name="todoname"
+          maxLength={50}
+          className="inputBox"
+          required
         ></input>
-        <input type="submit"></input>
+        <input type="submit" className="subbtn"></input>
       </form>
 
-      <h2>My ToDo list</h2>
+      <p className="listHeadContainer">Todo Lists</p>
       {todoLists.map((item) => (
-        <div key={item}>
-          <p style={{ display: "inline-block" }}>{item}</p>
+        <div key={item} className="todoItem">
+          <p className="todoName" style={{ display: "inline-block" }}>
+            {item}
+          </p>
           <button
             type="button"
+            className="deleteButton"
             onClick={() => delOnClick(item)}
-            style={{ display: "inline-block", marginLeft: "2rem" }}
           >
-            x
+            ❌
           </button>
         </div>
       ))}
