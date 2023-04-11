@@ -10,7 +10,7 @@ export const toastHook = ({
   if (type === "success") {
     toast.success(message, {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -21,7 +21,7 @@ export const toastHook = ({
   } else {
     toast.warning(message, {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
