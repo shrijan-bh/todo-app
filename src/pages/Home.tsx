@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "../styles/main.css";
 import { ToastContainer } from "react-toastify";
 import { toastHook } from "../hooks/toastHook";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [todoItem, setTodoItem] = useState("");
@@ -82,6 +83,19 @@ const Home = () => {
           </div>
         ))}
       </div>
+      <Link
+        to=""
+        onClick={() => {
+          const w = window.open("https://github.com/shrijan-bh/");
+          if (w) {
+            w.focus();
+          }
+        }}
+      >
+        <p className="copyright">
+          Copyright © All Rights Reserved - Shrijan Bhandari
+        </p>
+      </Link>
     </>
   );
 };
