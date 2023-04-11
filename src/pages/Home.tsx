@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
+import "react-toastify/dist/ReactToastify.css";
 import "../styles/main.css";
+import { ToastContainer } from "react-toastify";
+import { toastHook } from "../hooks/toastHook";
+
 const Home = () => {
   const [todoItem, setTodoItem] = useState("");
   const storageItems = JSON.parse(localStorage.getItem("items") || "[]");
@@ -13,8 +17,15 @@ const Home = () => {
     e.preventDefault();
     if (!todoLists.includes(todoItem)) {
       setTodoLists((prev) => [todoItem, ...prev]);
+      toastHook({
+        message: "Sucessfully added",
+        type: "success",
+      });
     } else {
-      alert("Repeated value");
+      toastHook({
+        message: "Value repeated",
+        type: "warning",
+      });
     }
     setTodoItem("");
   };
@@ -23,7 +34,10 @@ const Home = () => {
     const answer = todoLists.includes(item);
     answer
       ? (setTodoLists((current) => current.filter((ite) => ite !== item)),
-        alert("Sucessfully deleted"))
+        toastHook({
+          message: "Sucessfully deleted",
+          type: "success",
+        }))
       : console.log("No data");
   };
   useEffect(() => {
@@ -32,41 +46,43 @@ const Home = () => {
     }
   }, [todoLists]);
   return (
-    <div className="mainContainer">
-      <Helmet>
-        <title>Todo - Manage your tasks efficiently</title>
-      </Helmet>
+    <>
+      <ToastContainer />
 
-      <p className="headContainer">Add your tasks</p>
-      <form onSubmit={formOnSubmit} className="formbox">
-        <input
-          onChange={formOnChange}
-          type="text"
-          value={todoItem}
-          name="todoname"
-          maxLength={50}
-          className="inputBox"
-          required
-        ></input>
-        <input type="submit" className="subbtn"></input>
-      </form>
-
-      <p className="listHeadContainer">Todo Lists</p>
-      {todoLists.map((item) => (
-        <div key={item} className="todoItem">
-          <p className="todoName" style={{ display: "inline-block" }}>
-            {item}
-          </p>
-          <button
-            type="button"
-            className="deleteButton"
-            onClick={() => delOnClick(item)}
-          >
-            ❌
-          </button>
-        </div>
-      ))}
-    </div>
+      <div className="mainContainer">
+        <Helmet>
+          <title>Todo - Manage your tasks efficiently</title>
+        </Helmet>
+        <p className="headContainer">Add your tasks</p>
+        <form onSubmit={formOnSubmit} className="formbox">
+          <input
+            onChange={formOnChange}
+            type="text"
+            value={todoItem}
+            name="todoname"
+            maxLength={50}
+            className="inputBox"
+            required
+          ></input>
+          <input type="submit" className="subbtn"></input>
+        </form>
+        <p className="listHeadContainer">Todo Lists</p>
+        {todoLists.map((item) => (
+          <div key={item} className="todoItem">
+            <p className="todoName" style={{ display: "inline-block" }}>
+              {item}
+            </p>
+            <button
+              type="button"
+              className="deleteButton"
+              onClick={() => delOnClick(item)}
+            >
+              ❌
+            </button>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 
