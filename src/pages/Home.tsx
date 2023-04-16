@@ -5,6 +5,9 @@ import "../styles/main.css";
 import { ToastContainer } from "react-toastify";
 import { toastHook } from "../hooks/toastHook";
 import { Link } from "react-router-dom";
+import { DragDropContext, DragUpdate, Draggable, DraggableProps, Droppable, DroppableProvided } from "react-beautiful-dnd";
+import Card from "../components/Card";
+
 
 const Home = () => {
   const [todoItem, setTodoItem] = useState("");
@@ -16,15 +19,23 @@ const Home = () => {
 
   const formOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!todoLists.includes(todoItem)) {
-      setTodoLists((prev) => [...prev, todoItem]);
+    if(todoLists.length < 5){
+      if (!todoLists.includes(todoItem)) {
+        setTodoLists((prev) => [...prev, todoItem]);
+        toastHook({
+          message: "Sucessfully added",
+          type: "success",
+        });
+      } else {
+        toastHook({
+          message: "Value repeated",
+          type: "warning",
+        });
+      }
+    }
+    else{
       toastHook({
-        message: "Sucessfully added",
-        type: "success",
-      });
-    } else {
-      toastHook({
-        message: "Value repeated",
+        message: "Maximum allowed number of task is 5.",
         type: "warning",
       });
     }
@@ -41,6 +52,47 @@ const Home = () => {
         }))
       : console.log("No data");
   };
+
+  
+function DragAndDropList() {
+
+  const onDragEnd = (result: DragUpdate) => {
+    if(!result.destination){
+      return;
+    }
+    const newItems = Array.from(todoLists);
+    console.log(result)
+    const [removed] = newItems.splice(result.source.index, 1);
+    newItems.splice(result.destination.index, 0, removed);
+    setTodoLists(newItems);
+  };
+
+  return (
+    <DragDropContext onDragEnd={onDragEnd}>
+      <Droppable droppableId="droppable">
+        {(provided: DroppableProvided) => (
+          <div {...provided.droppableProps} ref={provided.innerRef}>
+            {todoLists.map((item, index) => (
+              <Draggable key={item} draggableId={index.toString()} index={index}>
+                {(provided, snapshot) => (
+                  <Card
+                    provided={provided}
+                    snapshot={snapshot}
+                    item={item}
+                    delOnClickFunction={delOnClick}
+                    
+                  />
+                )}
+              </Draggable>
+            ))}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
+  );
+}
+
   useEffect(() => {
     if (!!todoLists) {
       window.localStorage.setItem("items", JSON.stringify(todoLists));
@@ -49,8 +101,8 @@ const Home = () => {
   return (
     <>
       <ToastContainer />
-
-      <div className="mainContainer">
+      <div className="wrap-container">
+        <div className="mainContainer">
         <Helmet>
           <title>Todo - Manage your tasks efficiently</title>
         </Helmet>
@@ -68,20 +120,8 @@ const Home = () => {
           <input type="submit" className="subbtn"></input>
         </form>
         <p className="listHeadContainer">Todo Lists</p>
-        {todoLists.map((item) => (
-          <div key={item} className="todoItem">
-            <p className="todoName" style={{ display: "inline-block" }}>
-              {item}
-            </p>
-            <button
-              type="button"
-              className="deleteButton"
-              onClick={() => delOnClick(item)}
-            >
-              ❌
-            </button>
-          </div>
-        ))}
+        <DragAndDropList />
+      </div>
       </div>
       <Link
         to=""
